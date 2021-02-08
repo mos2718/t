@@ -1,0 +1,89 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+
+    <title>報名系統</title>
+</head>
+<body>
+    <table align="center" style="border: solid 2px gray;" >	
+        <tr><td>姓名  </td><td>:&nbsp;<input type="text" id="textName"><br></td></tr>
+        <tr><td>Email </td><td>:&nbsp;<input type="text" id="Email"><br></td></tr>
+        <tr><td>電話 </td><td>:&nbsp;<input type="text" id="tel"></td></tr>
+        <tr><td>所屬機構 </td><td>:&nbsp;<input type="text" id="School"></td></tr>
+        <tr><td>職稱 </td><td>:&nbsp;<input type="text" id="Grade" placeholder="Eg. 老師、家長、工程師" ></td></tr>
+        <tr><td colspan="2" align="center"><input type="button" value=" 報  名   " onclick="postData()"></td></tr>
+    </table>  
+  
+</body>
+<script src="setting.js"></script>
+<script >
+ var Person = {
+        "resourceType": "Person",
+        "identifier":[
+            {   "system":"Email",
+                "value":"example@gmail.com"
+            },
+            {   "system":"Password",
+                "value":"123"
+            },
+           {   "system":"company",
+                "value":""
+            },
+            {   "system":"職稱",
+                "value":"老師"
+            }
+        ],
+        "name": [{   "text": "林小妹"  } ],
+        "managingOrganization": {
+         "reference": "Organization/58"
+        }
+        /* ,
+		"link": [{"target":
+		            {  "reference":"",
+                        "display":"Student"
+                    }
+                }] */
+    };
+    
+
+    //上傳 dataStr 到網路上
+    function HTTPPostData(urlStr, dataStr ) {
+    var HttpObj = new XMLHttpRequest();
+	HttpObj.open("POST", urlStr, true);
+    HttpObj.setRequestHeader("Content-type", "application/json+fhir");
+   // HttpObj.setRequestHeader("Content-type", "application/xml+fhir");
+    HttpObj.onreadystatechange = function () {
+        if (HttpObj.readyState === 4) {
+            ret = HttpObj.responseText;
+            callBack();
+           //  alert(ret);
+        }
+    }
+
+    HttpObj.send(dataStr);
+  //  getData
+}
+	function callBack()
+	     {alert("報名成功");}
+	function postData(){ 
+			//var email= document.getElementById('Email').value;
+			/*var url=FHIRrootURL + '/Person?identifier=Username|' + username;
+			 HTTPGetData(url); 
+			var jsonOBJ =JSON.parse(this.responseText);
+			if (jsonOBJ.total > 0) alert('email exist!');
+			else{	*/	
+			Person.name[0].text = document.getElementById("textName").value;
+            Person.identifier[0].value = document.getElementById("Email").value;
+            Person.identifier[1].value = document.getElementById("tel").value;
+            Person.identifier[2].value = document.getElementById("School").value;
+            Person.identifier[3].value = document.getElementById("Grade").value;
+			var jsonStr = JSON.stringify(Person);
+			var urlStr = FHIRrootURL + '/' + "Person";
+			HTTPPostData(urlStr, jsonStr );
+	     	//}
+			
+		}
+
+</script>
+</html>

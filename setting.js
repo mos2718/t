@@ -1,8 +1,3 @@
-﻿var FHIRrootURL = "http://hapi.fhir.org/baseR4";
-/*  不會用到
-references
-https://mos2718.github.io/MICexp/Index.html
-https://mos2718.github.io/FHIRclinicalReport/Index.html
+﻿var FHIRrootURL = "http://203.64.84.150:51888/fhir";
 
-
-*/
+//"http://hapi.fhir.org/baseR4";
